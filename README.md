@@ -1,10 +1,14 @@
 # ece470finalproject
 
-1. LofiSort
+LofiSort
 
-2. LofiSearch
+*insert stuff here*
 
-3. Proximity Sensor (WIP)
+LofiSearch
+
+*insert stuff here*
+
+Proximity Sensor (WIP)
 
 Currently the proximity sensor is not fully set up. However, the CoppeliaSim scene "trash-collection.ttt" contains the work that we have so far.
 This work includes a UR3 arm with a non-functional proximity sensor, as well as a laptop placed above the sensor's range. Ideally, the laptop
