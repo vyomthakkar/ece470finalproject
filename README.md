@@ -1,10 +1,19 @@
 # ece470finalproject
 
-LofiSort
+Robot Motion (WIP)
 
-*insert stuff here*
+Using the provided 'example.py' file from the class, we have been able to program a UR3 robot arm to move to three different waypoints with the remote python api.
 
-LofiSearch
+In order to run this demo:
+- Download and install CoppeliaSim if you haven't already.
+- Download and install Anaconda3 (which comes with the Spyder IDE) if you haven't already.
+- Open the "ece470_sim.ttt" scene.
+- Open "example.py" in the Spyder IDE.
+- In the LUA command box within CoppeliaSim, run "simExtRemoteApiStart (19999)".
+- In Spyder, run the "example.py" code.
+- Observe in the CoppeliaSim window that the arm moves.
+
+Camera Vision (WIP)
 
 *insert stuff here*
 
@@ -19,5 +28,5 @@ In order to run this demo:
 - Download and install CoppeliaSim if you haven't already.
 - Open the "trash-collection.ttt" scene
 - At the top bar click Simulation -> Start simulation
-- Observe the results on the graph.
+- Observe the results on the graph within CoppeliaSim.
 - Click Simulation -> Stop simulation
