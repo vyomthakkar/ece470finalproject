@@ -23,6 +23,7 @@ In order to demo the vision sensor :
 - Open the "ece470_sim.ttt" scene.
 - Open the file "simpleTest.py" in the Spyder IDE.
 - In the LUA command box within CoppeliaSim, run "simExtRemoteApiStart (19999)".
+- Run the simulation in Coppelia by pressing the play button. 
 - In Spyder, run the "simpleTest.py" code.
 - Observe the 2D image from the vision sensor being displayed on the spyder terminal.
 
