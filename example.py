@@ -139,16 +139,79 @@ sim.simxStartSimulation(clientID, sim.simx_opmode_oneshot)
 # ******************************** Your robot control code goes here  ******************************** #
 time.sleep(1)
 
-Goal_joint_angles = np.array([[0,0,-0.5*np.pi,0.5*np.pi,-0.5*np.pi,-0.5*np.pi], \
-							[0.5*np.pi,0,-0.5*np.pi,0.5*np.pi,0.5*np.pi,-0.5*np.pi],\
-							[-0.5*np.pi,-0.5*np.pi,-0.5*np.pi,0,-0.5*np.pi,-0.5*np.pi]])
-for i in range(3):
+zero_state_trans = sim.simxGetJointMatrix(clientID, joint_six_handle, sim.simx_opmode_blocking)
+M = np.array([[zero_state_trans[1][0], zero_state_trans[1][1], zero_state_trans[1][2], zero_state_trans[1][3]],
+              [zero_state_trans[1][4], zero_state_trans[1][5], zero_state_trans[1][6], zero_state_trans[1][7]],
+              [zero_state_trans[1][8], zero_state_trans[1][9], zero_state_trans[1][10], zero_state_trans[1][11]],
+              [0,0,0,1]])
+#print(repr(M),"\n")
 
-        SetJointPosition(Goal_joint_angles[i])
+qx, qy, qz = get_joint()
+#print(repr(qx),"\n")
+#print(repr(qy),"\n")
+#print(repr(qz),"\n")
+
+omegas = np.array([[0,0,1],
+                   [-1,0,0],
+                   [-1,0,0],
+                   [1,0,0],
+                   [0,0,-1],
+                   [1,0,0]])
+#print(repr(omegas),"\n")
     
+v = np.array([np.array(np.cross(-omegas[0],np.array([qx[0],qy[0],qz[0]]))),
+              np.array(np.cross(-omegas[1],np.array([qx[0],qy[0],qz[0]]))),
+              np.array(np.cross(-omegas[2],np.array([qx[0],qy[0],qz[0]]))),
+              np.array(np.cross(-omegas[3],np.array([qx[0],qy[0],qz[0]]))),
+              np.array(np.cross(-omegas[4],np.array([qx[0],qy[0],qz[0]]))),
+              np.array(np.cross(-omegas[5],np.array([qx[0],qy[0],qz[0]])))])
+#print(repr(v),"\n")
+
+s_bracket_1 = np.array([[0,-omegas[0][2],omegas[0][1],v[0][0]],[omegas[0][2],0,-omegas[0][0],v[0][1]],[-omegas[0][1],omegas[0][0],0,v[0][2]],[0,0,0,0]])
+s_bracket_2 = np.array([[0,-omegas[1][2],omegas[1][1],v[1][0]],[omegas[1][2],0,-omegas[1][0],v[1][1]],[-omegas[1][1],omegas[1][0],0,v[1][2]],[0,0,0,0]])
+s_bracket_3 = np.array([[0,-omegas[2][2],omegas[2][1],v[2][0]],[omegas[2][2],0,-omegas[2][0],v[2][1]],[-omegas[2][1],omegas[2][0],0,v[2][2]],[0,0,0,0]])
+s_bracket_4 = np.array([[0,-omegas[3][2],omegas[3][1],v[3][0]],[omegas[3][2],0,-omegas[3][0],v[3][1]],[-omegas[3][1],omegas[3][0],0,v[3][2]],[0,0,0,0]])
+s_bracket_5 = np.array([[0,-omegas[4][2],omegas[4][1],v[4][0]],[omegas[4][2],0,-omegas[4][0],v[4][1]],[-omegas[4][1],omegas[4][0],0,v[4][2]],[0,0,0,0]])
+s_bracket_6 = np.array([[0,-omegas[5][2],omegas[5][1],v[5][0]],[omegas[5][2],0,-omegas[5][0],v[5][1]],[-omegas[5][1],omegas[5][0],0,v[5][2]],[0,0,0,0]])
+
+thetas_string = input("PLEASE input 6 floats for the joint angles for the UR3\n")
+thetas_string_split = thetas_string.split(" ")
+out_thetas = [float(thetas_string_split[i])*np.pi/180 for i in range(len(thetas_string_split))]
+
+s_bracket_1_theta = np.dot(s_bracket_1, out_thetas[0])
+s_bracket_2_theta = np.dot(s_bracket_2, out_thetas[1])
+s_bracket_3_theta = np.dot(s_bracket_3, out_thetas[2])
+s_bracket_4_theta = np.dot(s_bracket_4, out_thetas[3])
+s_bracket_5_theta = np.dot(s_bracket_5, out_thetas[4])
+s_bracket_6_theta = np.dot(s_bracket_6, out_thetas[5])
+
+exp_1 = expm(s_bracket_1_theta)
+exp_2 = expm(s_bracket_2_theta)
+exp_3 = expm(s_bracket_3_theta)
+exp_4 = expm(s_bracket_4_theta)
+exp_5 = expm(s_bracket_5_theta)
+exp_6 = expm(s_bracket_6_theta)
+
+out_T = np.dot(exp_1, np.dot(exp_2, np.dot(exp_3, np.dot(exp_4, np.dot(exp_5, np.dot(exp_6, M))))))
+print(repr(out_T),"\n")
+
+time.sleep(3)
+SetJointPosition(out_thetas)
+
+#Goal_joint_angles = np.array([[np.pi,-0.5*np.pi,0,0,0.5*np.pi,0],
+#                              [0,0,0,0,0,0],
+#                              [0.5*np.pi,-0.5*np.pi,0,0,0.5*np.pi,0],
+#                              [0,0,0,0,0,0],
+#                              [np.pi,-0.5*np.pi,0,0,0.5*np.pi,0],
+#                              [0,0,0,0,0,0],
+#                              [-0.5*np.pi,-0.5*np.pi,0,0,0.5*np.pi,0],
+#                              [0,0,0,0,0,0]])
+				
+#for i in range(len(Goal_joint_angles)):
+#    SetJointPosition(Goal_joint_angles[i])
 
 # Wait two seconds
-time.sleep(2)
+time.sleep(5)
 # **************************************************************************************************** #
 
 # Stop simulation
