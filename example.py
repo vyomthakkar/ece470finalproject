@@ -164,11 +164,11 @@ omegas = np.array([[0,0,1],
     
 # Calculate V = -Omega X Q per joint
 v = np.array([np.array(np.cross(-omegas[0],np.array([qx[0],qy[0],qz[0]]))),
-              np.array(np.cross(-omegas[1],np.array([qx[0],qy[0],qz[0]]))),
-              np.array(np.cross(-omegas[2],np.array([qx[0],qy[0],qz[0]]))),
-              np.array(np.cross(-omegas[3],np.array([qx[0],qy[0],qz[0]]))),
-              np.array(np.cross(-omegas[4],np.array([qx[0],qy[0],qz[0]]))),
-              np.array(np.cross(-omegas[5],np.array([qx[0],qy[0],qz[0]])))])
+              np.array(np.cross(-omegas[1],np.array([qx[1],qy[1],qz[1]]))),
+              np.array(np.cross(-omegas[2],np.array([qx[2],qy[2],qz[2]]))),
+              np.array(np.cross(-omegas[3],np.array([qx[3],qy[3],qz[3]]))),
+              np.array(np.cross(-omegas[4],np.array([qx[4],qy[4],qz[4]]))),
+              np.array(np.cross(-omegas[5],np.array([qx[5],qy[5],qz[5]])))])
 #print(repr(v),"\n")
 
 # Calculate skew symmetric matrices [S] for each screw axis joint
