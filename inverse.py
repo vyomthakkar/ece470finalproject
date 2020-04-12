@@ -3,6 +3,7 @@ import time
 import numpy as np
 from math import cos, sin
 from scipy.linalg import expm,logm
+import modern_robotics as mr
 
 
 # Get distances measurements from each joint center to base frame (useful for forward kinematics)
@@ -106,7 +107,7 @@ print(stringData)
 result, base_handle = sim.simxGetObjectHandle(clientID, 'UR3_link1_visible', sim.simx_opmode_blocking)
 if result != sim.simx_return_ok:
 	raise Exception('could not get object handle for base frame')
-    
+
 # Get "handle" to the all joints of robot
 result, joint_one_handle = sim.simxGetObjectHandle(clientID, 'UR3_joint1', sim.simx_opmode_blocking)
 if result != sim.simx_return_ok:
@@ -137,9 +138,20 @@ if result != sim.simx_return_ok:
 sim.simxStartSimulation(clientID, sim.simx_opmode_oneshot)
 
 # ******************************** Your robot control code goes here  ******************************** #
-time.sleep(1)
+rotation_string = input("PLEASE input 9 floats for the rotation matrix for the UR3 end effector space separated in row major order\n")
+rotation_string_split = rotation_string.split(" ")
+trans_string = input("PLEASE input 3 floats for the translation matrix for the UR3 end effector space separated in row major order\n")
+trans_string_split = trans_string.split(" ")
 
-# Get homogeneous transformation matrix M of base to end effector in zero-state of robot
+pose_inv_kin = np.zeros((4, 4))
+for i, val in enumerate(rotation_string_split):
+    pose_inv_kin[int(i/3), int(i%3)] = val
+for i, val in enumerate(trans_string_split):
+    pose_inv_kin[i, 3] = val
+pose_inv_kin[3, 3] = 1
+
+# print(repr(pose_inv_kin))
+
 M = np.array ([[ 0, -1,  0,  0.39   ],
                [ 0,  0, -1,  0.401  ],
                [ 1,  0,  0,  0.2155 ],
@@ -169,45 +181,33 @@ v = np.array([np.array(np.cross(-omegas[0], Q[0])),
               np.array(np.cross(-omegas[4], Q[4])),
               np.array(np.cross(-omegas[5], Q[5]))])
 
-# Calculate skew symmetric matrices [S] for each screw axis joint
-s_bracket_1 = np.array([[0,-omegas[0][2],omegas[0][1],v[0][0]],[omegas[0][2],0,-omegas[0][0],v[0][1]],[-omegas[0][1],omegas[0][0],0,v[0][2]],[0,0,0,0]])
-s_bracket_2 = np.array([[0,-omegas[1][2],omegas[1][1],v[1][0]],[omegas[1][2],0,-omegas[1][0],v[1][1]],[-omegas[1][1],omegas[1][0],0,v[1][2]],[0,0,0,0]])
-s_bracket_3 = np.array([[0,-omegas[2][2],omegas[2][1],v[2][0]],[omegas[2][2],0,-omegas[2][0],v[2][1]],[-omegas[2][1],omegas[2][0],0,v[2][2]],[0,0,0,0]])
-s_bracket_4 = np.array([[0,-omegas[3][2],omegas[3][1],v[3][0]],[omegas[3][2],0,-omegas[3][0],v[3][1]],[-omegas[3][1],omegas[3][0],0,v[3][2]],[0,0,0,0]])
-s_bracket_5 = np.array([[0,-omegas[4][2],omegas[4][1],v[4][0]],[omegas[4][2],0,-omegas[4][0],v[4][1]],[-omegas[4][1],omegas[4][0],0,v[4][2]],[0,0,0,0]])
-s_bracket_6 = np.array([[0,-omegas[5][2],omegas[5][1],v[5][0]],[omegas[5][2],0,-omegas[5][0],v[5][1]],[-omegas[5][1],omegas[5][0],0,v[5][2]],[0,0,0,0]])
+# Screw axis vectors
+S1 = np.array([omegas[0], v[0]]).reshape((6,))
+S2 = np.array([omegas[1], v[1]]).reshape((6,))
+S3 = np.array([omegas[2], v[2]]).reshape((6,))
+S4 = np.array([omegas[3], v[3]]).reshape((6,))
+S5 = np.array([omegas[4], v[4]]).reshape((6,))
+S6 = np.array([omegas[5], v[5]]).reshape((6,))
 
-# Prompt the user for 6 joint angle values
-thetas_string = input("PLEASE input 6 floats for the joint angles for the UR3\n")
-thetas_string_split = thetas_string.split(" ")
-out_thetas = [float(thetas_string_split[i])*np.pi/180 for i in range(len(thetas_string_split))]
+S = np.zeros((6,6))
+S[:,0] = S1
+S[:,1] = S2
+S[:,2] = S3
+S[:,3] = S4
+S[:,4] = S5
+S[:,5] = S6
 
-# Multiply each [S] with the given theta
-s_bracket_1_theta = np.dot(s_bracket_1, out_thetas[0])
-s_bracket_2_theta = np.dot(s_bracket_2, out_thetas[1])
-s_bracket_3_theta = np.dot(s_bracket_3, out_thetas[2])
-s_bracket_4_theta = np.dot(s_bracket_4, out_thetas[3])
-s_bracket_5_theta = np.dot(s_bracket_5, out_thetas[4])
-s_bracket_6_theta = np.dot(s_bracket_6, out_thetas[5])
+thetalist0 = np.zeros((S.shape[1]))
+thetalist,success = mr.IKinSpace(S,M,pose_inv_kin,thetalist0,0.01,0.01)
+#print("thetas found: \n", repr(thetalist.reshape(S.shape[1],1)))
 
-# Calculate matrix exponential per screw axis
-exp_1 = expm(s_bracket_1_theta)
-exp_2 = expm(s_bracket_2_theta)
-exp_3 = expm(s_bracket_3_theta)
-exp_4 = expm(s_bracket_4_theta)
-exp_5 = expm(s_bracket_5_theta)
-exp_6 = expm(s_bracket_6_theta)
+thetalist.reshape((6,))
+print(thetalist*180/np.pi)
 
-# Output the final transformation as e^([S1]*theta1) * e^([S2]*theta2) * ... * e^([S6]*theta6) * M
-out_T = np.dot(exp_1, np.dot(exp_2, np.dot(exp_3, np.dot(exp_4, np.dot(exp_5, np.dot(exp_6, M))))))
-print(repr(out_T),"\n")
+SetJointPosition(thetalist)
 
-# Move the robot to the angles given by the user
-time.sleep(3)
-SetJointPosition(out_thetas)
-
-# Wait two seconds
 time.sleep(5)
+
 # **************************************************************************************************** #
 
 # Stop simulation
