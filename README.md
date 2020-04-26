@@ -12,6 +12,30 @@
 - Decide which location to place the block, depending on its color
 - Place the block in that location using inverse kinematics
 
+# Update 3 - 4/12/2020
+Demo: https://www.youtube.com/watch?v=qfTdH86_fEA
+
+## Inverse Kinematics
+
+We have created a new python script 'inverse.py', which will produce the joint angles the UR3 should be placed in, in order to reach a given end effector pose.
+
+In order to run this demo:
+- Download and install CoppeliaSim if you haven't already.
+- Download and install Anaconda3 (which comes with the Spyder IDE) if you haven't already.
+- Open the "waypoint_draft.ttt" scene.
+- Open "inverse.py" in the Spyder IDE.
+- In the LUA command box within CoppeliaSim, run "simExtRemoteApiStart (19999)".
+- In Spyder, run the "inverse.py" code.
+- Enter 9 floats for the rotation matrix of the end effector in row major order.
+- Enter 3 floats for the translation matrix of the end effector in row major order.
+- Observe the produced joint angles in the console.
+- Observe in the CoppeliaSim window that the end effector moves to the pose given.
+
+## Planning & Decision
+
+Our plan for implementing planning and decision on the UR3 is showcased in the following block diagram:
+![](blockdiagram.jpg)
+
 # Update 2 - 3/22/2020
 Demo: https://www.youtube.com/watch?v=czLAfamQkOA
 
