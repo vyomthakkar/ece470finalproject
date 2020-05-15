@@ -1,10 +1,10 @@
 '''
-File: gripper.py
+File: cleaner_pastures.py
 Purpose: Script to run to simulate Cleaner Pastures sorting robot
-How to Use: 1. Open up vision_test.ttt scene in CoppeliaSim
-            2. Open up gripper.py in Spyder IDE
+How to Use: 1. Open up cleaner_pastures.ttt scene in CoppeliaSim
+            2. Open up cleaner_pastures.py in Spyder IDE
             3. In the LUA command box within CoppeliaSim, run "simExtRemoteApiStart (19999)"
-            4. Run gripper.py in Spyder IDE
+            4. Run cleaner_pastures.py in Spyder IDE
             5. Observe red and green blocks that are coming down the conveyor belt are sorted by the UR3
 Github: https://github.com/vyomthakkar/ece470finalproject
 Demo Video: https://www.youtube.com/watch?v=pLc1tVorXGs
