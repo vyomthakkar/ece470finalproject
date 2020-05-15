@@ -154,11 +154,11 @@ while(1):
         time.sleep(1)
         
         # RED
-        if (sensor_image[0][0][0] >= 250):
+        if (sensor_image[0][0][0] >= 250 or sensor_image[0][31][0] >= 250 or sensor_image[31][0][0] >= 250 or sensor_image[31][31][0] >= 250 or sensor_image[15][15][0] >= 250):
             moveL(clientID, ur3_target, fposition4, 2) #move to red block section
         
         #GREEN
-        elif (sensor_image[0][0][1] >= 250):
+        elif (sensor_image[0][0][1] >= 250 or sensor_image[0][31][1] >= 250 or sensor_image[31][0][1] >= 250 or sensor_image[31][31][1] >= 250 or sensor_image[15][15][1] >= 250):
             moveL(clientID, ur3_target, fposition5, 2) #move to green block section
         
         time.sleep(1)
