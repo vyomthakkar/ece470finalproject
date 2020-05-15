@@ -13,8 +13,8 @@
 - Place the block in that location using inverse kinematics
 
 # Final Update - 5/15/2020
-Code under the final/ directory
-Demo: https://www.youtube.com/watch?v=pLc1tVorXGs
+Code under the final/ directory 
+Demo: https://www.youtube.com/watch?v=pLc1tVorXGs 
 
 ## Final Cleaner Pastures Simulation
 
@@ -34,8 +34,8 @@ To cleanly stop the demo:
 - Stop the simulation in CoppeliaSim.
 
 # Update 3 - 4/12/2020
-Code under the update_3/ directory
-Demo: https://www.youtube.com/watch?v=qfTdH86_fEA
+Code under the update_3/ directory 
+Demo: https://www.youtube.com/watch?v=qfTdH86_fEA 
 
 ## Inverse Kinematics
 
@@ -59,8 +59,8 @@ Our plan for implementing planning and decision on the UR3 is showcased in the f
 ![](blockdiagram.jpg)
 
 # Update 2 - 3/22/2020
-Code under the update_2/ directory
-Demo: https://www.youtube.com/watch?v=czLAfamQkOA
+Code under the update_2/ directory 
+Demo: https://www.youtube.com/watch?v=czLAfamQkOA 
 
 ## Forward Kinematics
 
@@ -92,8 +92,8 @@ In order to run this demo:
 
 
 # Update 1 - 2/16/2020
-Code under the update_1/ directory
-Demo: https://www.youtube.com/watch?v=JmGm6Uzm1B0
+Code under the update_1/ directory 
+Demo: https://www.youtube.com/watch?v=JmGm6Uzm1B0 
 
 ## Robot Motion
 
