@@ -12,7 +12,29 @@
 - Decide which location to place the block, depending on its color
 - Place the block in that location using inverse kinematics
 
+# Final Update - 5/15/2020
+Code under the final/ directory
+Demo: https://www.youtube.com/watch?v=pLc1tVorXGs
+
+## Final Cleaner Pastures Simulation
+
+All of the previous checkpoints have cumulated into this final simulation. The 'cleaner_pastures.py' script works in collaboration with the 'cleaner_pastures.ttt' scene to simulate our sorting robot.
+
+In order to run this demo:
+- Download and install CoppeliaSim if you haven't already.
+- Download and install Anaconda3 (which comes with the Spyder IDE) if you haven't already.
+- Open the "cleaner_pastures.ttt" scene.
+- Open "cleaner_pastures.py" in the Spyder IDE.
+- In the LUA command box within CoppeliaSim, run "simExtRemoteApiStart (19999)".
+- In Spyder, run the "cleaner_pastures.py" code.
+- In CoppeliaSim, observe red and green blocks that are coming down the conveyor belt are sorted by the UR3 robot.
+
+To cleanly stop the demo:
+- Stop the python script in the Spyder IDE.
+- Stop the simulation in CoppeliaSim.
+
 # Update 3 - 4/12/2020
+Code under the update_3/ directory
 Demo: https://www.youtube.com/watch?v=qfTdH86_fEA
 
 ## Inverse Kinematics
@@ -37,6 +59,7 @@ Our plan for implementing planning and decision on the UR3 is showcased in the f
 ![](blockdiagram.jpg)
 
 # Update 2 - 3/22/2020
+Code under the update_2/ directory
 Demo: https://www.youtube.com/watch?v=czLAfamQkOA
 
 ## Forward Kinematics
@@ -47,9 +70,9 @@ In order to run this demo:
 - Download and install CoppeliaSim if you haven't already.
 - Download and install Anaconda3 (which comes with the Spyder IDE) if you haven't already.
 - Open the "waypoint_draft.ttt" scene.
-- Open "example.py" in the Spyder IDE.
+- Open "forward.py" in the Spyder IDE.
 - In the LUA command box within CoppeliaSim, run "simExtRemoteApiStart (19999)".
-- In Spyder, run the "example.py" code.
+- In Spyder, run the "forward.py" code.
 - Enter 6 joint angle values (floats) in the console; for example: 90 90 90 0 0 0.
 - Observe the produced transformation matrix in the console.
 - Observe in the CoppeliaSim window that the arm moves to the joints specified.
@@ -69,6 +92,7 @@ In order to run this demo:
 
 
 # Update 1 - 2/16/2020
+Code under the update_1/ directory
 Demo: https://www.youtube.com/watch?v=JmGm6Uzm1B0
 
 ## Robot Motion
@@ -107,7 +131,7 @@ a graph of how far the laptop is from the robot during this fall, but we have no
 
 In order to run this demo:
 - Download and install CoppeliaSim if you haven't already.
-- Open the "trash-collection.ttt" scene
-- At the top bar click Simulation -> Start simulation
+- Open the "trash-collection.ttt" scene.
+- At the top bar click Simulation -> Start simulation.
 - Observe the results on the graph within CoppeliaSim.
-- Click Simulation -> Stop simulation
+- Click Simulation -> Stop simulation.
